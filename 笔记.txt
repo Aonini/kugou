@@ -1,0 +1,56 @@
+
+1. 数据请求，直接拿酷狗的数据
+	localhost ---请求产生跨域----http://m.kugou.com/
+
+2. UI界面，组件库 ant design mobile
+	官网：https://antd-mobile.gitee.io/docs/react/introduce-cn
+
+3. 稍作改造UI界面
+
+----------------------------------------------------------
+
+数据请求 接口
+	新歌 http://m.kugou.com?json=true
+	排行 http://m.kugou.com/rank/list?json=true
+	歌单 http://m.kugou.com/plist/index?json=true
+	歌手 http://m.kugou.com/singer/class?json=true
+
+设置代理
+	写在package.json中
+	"proxy": {  // 代理
+	    "/kugou": {  // 匹配的规则，当你访问的路径是/kugou开头 在这个规则
+	      "target": "http://m.kugou.com/",
+	      "changeOrigin": true,
+	      "pathRewrite": {
+	        "^/kugou": ""
+	      },
+	    }
+	  }
+
+	请求规则：
+	在应用在请求地址为 /kugou/rank/list?json=true,实际上请求的地址为：http://localhost:3000/kugou/rank/list?json=true
+
+	设置代理之后，请求的地址以 /kugou开头都会走到设置的规则中
+	根据target把域名给换成目标域名，变成：http://m.kugou.com/kugou/rank/list?json=true
+
+	根据pathRewrite 规则，把/kugou 改为空，最后真实请求的地址为：http://m.kugou.com/rank/list?json=true
+
+	http://m.kugou.com/rank/list
+
+
+-------------------------
+axios 库 发送ajax请求
+
+----------------------------
+
+路由设计 ，设计一个配置文件，根据配置文件生成 导航和内容
+
+-------------------------------------
+
+访问某个组件，需要数据，可以把请求方式放在每一个组件中
+
+先要设置状态，等到数据回来之后，调用setState，改变状态，重新渲染
+
+-----------------------
+css 
+	可以写在统一的地方
